@@ -40,8 +40,6 @@ This userscript is for people who prefer the darker, more visually separated Cha
 
 ### Option 1: Install from Greasy Fork
 
-Install from Greasy Fork:
-
 [ChatGPT Dark Mode Charcoal Palette Restore](https://greasyfork.org/en/scripts/583978-chatgpt-dark-mode-charcoal-palette-restore)
 
 ### Option 2: Install manually from GitHub
