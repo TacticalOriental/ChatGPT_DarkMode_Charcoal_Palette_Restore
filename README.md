@@ -2,12 +2,12 @@
 
 Restores ChatGPT’s original charcoal dark palette with a matched composer, canvas, sidebar, message bubbles, and bottom dock cleanup.
 
-This userscript is for people who prefer the darker, more visually separated ChatGPT interface instead of the flatter/lighter dark theme.
+This userscript is for people who prefer the original, more visually separated ChatGPT interface instead of the flatter/lighter dark theme.
 
 ## What it fixes
 
 * Restores the original charcoal main canvas
-* Matches the composer/input bar to the darker official-style surface
+* Matches the composer/input bar to the original official-style surface
 * Keeps the sidebar properly separated
 * Restores readable lifted message bubbles
 * Cleans up the bottom dock / footer strip artifact
