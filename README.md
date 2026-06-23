@@ -1,12 +1,12 @@
-# ChatGPT DarkMode Charcoal Palette Restore
+# ChatGPT Dark Mode Charcoal Palette Restore
 
-Restores ChatGPT’s deeper charcoal dark palette with a matched composer, canvas, sidebar, message bubbles, and bottom dock cleanup.
+Restores ChatGPT’s original charcoal dark palette with a matched composer, canvas, sidebar, message bubbles, and bottom dock cleanup.
 
 This userscript is for people who prefer the darker, more visually separated ChatGPT interface instead of the flatter/lighter dark theme.
 
 ## What it fixes
 
-* Restores a deeper charcoal main canvas
+* Restores the original charcoal main canvas
 * Matches the composer/input bar to the darker official-style surface
 * Keeps the sidebar properly separated
 * Restores readable lifted message bubbles
@@ -54,7 +54,7 @@ Once published, install from the Greasy Fork page for automatic updates and publ
 2. Open the script file in this repository:
 
 ```text
-ChatGPT DarkMode Charcoal Palette Restore.user.js
+ChatGPT_DarkMode_Charcoal_Palette_Restore.user.js
 ```
 
 3. Click **Raw**.
@@ -112,7 +112,7 @@ This avoids the common userscript problem where a dark-theme fix turns the UI in
 
 ## Why this exists
 
-Recent ChatGPT UI/theme changes made the dark mode feel flatter and less visually separated. This script restores a deeper charcoal palette while keeping the interface clean and usable.
+Recent ChatGPT UI/theme changes made the dark mode feel flatter and less visually separated. This script restores the original charcoal palette while keeping the interface clean and usable.
 
 ## Troubleshooting
 
