@@ -18,23 +18,23 @@ This userscript is for people who prefer the darker, more visually separated Cha
 
 ### Before
 
-![Before](screenshots/Default Dark Mode - Home.png)
+![Before](screenshots/Default_Dark_Mode-Home.png)
 
 ### After — Home Page
 
-![After home page](screenshots/Fixed Dark Mode - Home.png)
+![After home page](screenshots/Fixed_Dark_Mode-Home.png)
 
 ### Before — Chat Page
 
-![Before chat page](screenshots/Default Dark Mode - In_Session.png
+![Before chat page](screenshots/Default_Dark_Mode-In_Session.png)
 
 ### After — Chat Page
 
-![After chat page](screenshots/Fixed Dark Mode - In_Session.png)
+![After chat page](screenshots/Fixed_Dark_Mode-In_Session.png)
 
 ### Light Mode Unaffected
 
-![Light mode unaffected](screenshots/light-mode-unaffected.png)
+![Light mode unaffected](screenshots/Light_Mode_Unaffected.png)
 
 ## Install
 
