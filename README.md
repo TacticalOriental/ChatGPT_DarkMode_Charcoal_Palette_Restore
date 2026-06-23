@@ -16,7 +16,7 @@ This userscript is for people who prefer the darker, more visually separated Cha
 
 ## Preview
 
-### Before
+### Before — Home Page
 
 ![Before](screenshots/Default_Dark_Mode-Home.png)
 
