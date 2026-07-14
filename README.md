@@ -97,7 +97,7 @@ It only applies local visual styling to ChatGPT pages.
 
 ## How it works
 
-Version 2.1 uses ChatGPT’s current semantic UI hooks and internal design tokens instead of repeatedly scanning or repainting the page.
+Version 3.0 uses ChatGPT’s current semantic UI hooks and internal design tokens instead of repeatedly scanning or repainting the page.
 
 1. **Theme variable overrides**  
    Restores the charcoal canvas, darker sidebar, lifted message surfaces, and composer colors through ChatGPT’s own design tokens.
@@ -131,7 +131,7 @@ Check that:
 
 ### Light mode looks wrong
 
-Version 2.1 applies all visual rules only under `html.dark` and should not affect light mode.
+Version 3.0 applies all visual rules only under `html.dark` and should not affect light mode.
 
 Disable older copies or beta versions of the script, make sure only the current release is enabled, and hard-refresh the page.
 
