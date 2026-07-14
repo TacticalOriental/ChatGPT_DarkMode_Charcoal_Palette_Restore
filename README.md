@@ -95,18 +95,21 @@ It only applies local visual styling to ChatGPT pages.
 
 ## How it works
 
-The script combines three safer layers:
+Version 2.1 uses ChatGPT’s current semantic UI hooks and internal design tokens instead of repeatedly scanning or repainting the page.
 
-1. **Theme variable overrides**
-   It adjusts ChatGPT’s internal color tokens instead of relying on fragile Tailwind class names.
+1. **Theme variable overrides**  
+   Restores the charcoal canvas, darker sidebar, lifted message surfaces, and composer colors through ChatGPT’s own design tokens.
 
-2. **Geometry-based composer detection**
-   It finds the actual rounded composer/input pill by shape and position, instead of blindly styling every form or wrapper.
+2. **Semantic UI targeting**  
+   Uses current elements such as the composer surface, page header, conversation actions, thread footer, and disclaimer rather than fragile geometry detection.
 
-3. **Targeted bottom dock cleanup**
-   It patches the bottom strip artifact without repainting the whole page or breaking code blocks.
+3. **Independent code-block contrast**  
+   Overrides the local code-block surface token so code and copy cards remain visually raised without changing the darker composer.
 
-This avoids the common userscript problem where a dark-theme fix turns the UI into blocky rectangles.
+4. **Dark-mode-only CSS**  
+   Every visual rule is scoped under `html.dark`, so light mode remains untouched.
+
+The script uses one persistent stylesheet. It does not use MutationObservers, recurring DOM scans, or repaint intervals.
 
 ## Why this exists
 
