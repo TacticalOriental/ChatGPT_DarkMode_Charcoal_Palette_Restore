@@ -143,22 +143,19 @@ ChatGPT’s UI changes frequently. If the layout changes and the script breaks, 
 
 ## Development notes
 
-Stable principles used in this script:
-
 ```text
 Do:
-- prefer ChatGPT theme variables
-- detect composer by geometry
-- patch only the bottom dock artifact
-- keep light mode untouched
+- prefer ChatGPT design tokens
+- use semantic IDs, attributes, and test hooks
+- keep code-block and composer surfaces independent
+- scope every visual override to `html.dark`
 
 Avoid:
-- broad `main *` scans
-- broad `form` / `textarea` repainting
-- broad `[data-testid*="composer"]` repainting
-- `div:has(> pre)` code-block repainting
-- MutationObserver remove/reinsert loops
-```
+- geometry-based DOM scanning
+- recurring repaint intervals
+- broad `main *` or form overrides
+- manual code-block wrapper traversal
+- MutationObserver repaint loops
 
 ## License
 
