@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      2.1.0
+// @version      3.0.0
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
