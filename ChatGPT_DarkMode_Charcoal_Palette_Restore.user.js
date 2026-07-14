@@ -16,7 +16,7 @@
 (function () {
   'use strict';
 
-  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v2-1';
+  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v3-0-0';
 
   const css = `
     /* ---------------------------------------------------------
