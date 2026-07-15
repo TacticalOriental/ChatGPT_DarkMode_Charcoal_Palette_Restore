@@ -111,7 +111,7 @@ Version 3.0 uses ChatGPT’s current semantic UI hooks and internal design token
 4. **Dark-mode-only CSS**  
    Every visual rule is scoped under `html.dark`, so light mode remains untouched.
 
-The script uses one persistent stylesheet. It does not use MutationObservers, recurring DOM scans, or repaint intervals.
+The script uses one persistent stylesheet adopted to the document. It does not use MutationObservers, DOM scans, or repaint intervals.
 
 ## Why this exists
 
