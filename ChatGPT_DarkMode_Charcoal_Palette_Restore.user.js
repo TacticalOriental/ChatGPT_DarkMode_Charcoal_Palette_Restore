@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      3.0.0
+// @version      3.0.1
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
@@ -16,7 +16,7 @@
 (function () {
   'use strict';
 
-  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v3-0-0';
+  //const STYLE_ID = 'chatgpt-charcoal-palette-restore-v3-0-1';
 
   const css = `
     /* ---------------------------------------------------------
@@ -160,28 +160,12 @@
     }
   `;
 
-  function installStyle() {
-    const previous = document.getElementById(STYLE_ID);
-    if (previous) previous.remove();
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(css);
 
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = css;
+  document.adoptedStyleSheets = [
+    ...document.adoptedStyleSheets,
+    sheet,
+  ];
 
-    const target = document.head || document.documentElement;
-
-    if (target) {
-      target.appendChild(style);
-    } else {
-      document.addEventListener(
-        'DOMContentLoaded',
-        () => {
-          (document.head || document.documentElement).appendChild(style);
-        },
-        { once: true }
-      );
-    }
-  }
-
-  installStyle();
 })();
