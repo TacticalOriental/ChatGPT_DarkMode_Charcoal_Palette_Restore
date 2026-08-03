@@ -26,7 +26,7 @@
     html.dark {
       --charcoal-sidebar: #181818;
 
-      --charcoal-canvas-rgb: 33, 33, 33;
+      --charcoal-canvas-rgb: 33, 33, 33; /* #212121 */
       --charcoal-canvas: rgb(var(--charcoal-canvas-rgb));
       --charcoal-canvas-transparent: rgba(
         var(--charcoal-canvas-rgb),
