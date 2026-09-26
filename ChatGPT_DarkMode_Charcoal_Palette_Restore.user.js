@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      3.1.0
-// @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI hooks, without DOM scanning or repaint loops.
+// @version      4.0.0
+// @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI tokens and hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
 // @match        https://chatgpt.com/*
@@ -16,197 +16,118 @@
 (function () {
   'use strict';
 
-  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v3-1-0';
+  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v4-0-0';
   const css = String.raw;
 
   const stylesheet = css`
     /* ---------------------------------------------------------
        Script-owned charcoal palette
        --------------------------------------------------------- */
-    html.dark {
+    html[data-theme='dark'] {
       --charcoal-sidebar: #181818;
-
-      --charcoal-canvas-rgb: 33, 33, 33; /* #212121 */
-      --charcoal-canvas: rgb(var(--charcoal-canvas-rgb));
-      --charcoal-canvas-transparent: rgba(
-        var(--charcoal-canvas-rgb),
-        0
-      );
-
+      --charcoal-canvas: #212121;
       --charcoal-raised: #303030;
-      --charcoal-hover: #383838;
-      --charcoal-border: #424242;
 
-      /* ChatGPT semantic token mapping. */
-      --bg-primary: var(--charcoal-canvas) !important;
+      /* -------------------------------------------------------
+         Current ChatGPT semantic surface mapping
+         ------------------------------------------------------- */
 
-      --main-surface-primary: var(--charcoal-canvas) !important;
-      --main-surface-secondary: var(--charcoal-raised) !important;
-      --main-surface-tertiary: var(--charcoal-hover) !important;
+      /* Main application / conversation canvas. */
+      --chat-background-color: var(--charcoal-canvas) !important;
 
-      --bg-secondary-surface: var(--charcoal-canvas) !important;
-      --bg-elevated-secondary: var(--charcoal-raised) !important;
-
-      --sidebar-surface-primary: var(--charcoal-sidebar) !important;
-      --sidebar-surface-secondary: var(--charcoal-canvas) !important;
-      --sidebar-surface-tertiary: var(--charcoal-raised) !important;
-
-      --message-surface: var(--charcoal-raised) !important;
-
-      /* Old and current composer token names. */
-      --composer-surface: var(--charcoal-sidebar) !important;
-      --composer-surface-primary: var(--charcoal-sidebar) !important;
-
-      --border-light: var(--charcoal-raised) !important;
-      --border-medium: var(--charcoal-border) !important;
-    }
-
-    /* Main conversation canvas. */
-    html.dark,
-    html.dark body,
-    html.dark body > div:first-child,
-    html.dark #main,
-    html.dark #thread {
-      background: var(--charcoal-canvas) !important;
-      background-color: var(--charcoal-canvas) !important;
-    }
-
-    /* Sidebar stays darker than the canvas. */
-    html.dark #stage-slideover-sidebar,
-    html.dark #stage-slideover-sidebar > div {
-      background-color: var(--charcoal-sidebar) !important;
-    }
-
-    /* ---------------------------------------------------------
-       Current composer: exact semantic hook, no geometry scan
-       --------------------------------------------------------- */
-    html.dark [data-composer-surface='true'] {
-      --composer-surface-primary: var(--charcoal-sidebar) !important;
-
-      background: var(--charcoal-sidebar) !important;
-      background-color: var(--charcoal-sidebar) !important;
-    }
-
-    /* ---------------------------------------------------------
-       Code/copy cards: raised contrast independent of composer
-       --------------------------------------------------------- */
-    html.dark
-      pre
-      [class*='bg-(--code-block-surface)'][class*='overflow-clip'] {
-      --code-block-surface: var(--charcoal-raised) !important;
-
-      background-color: var(--charcoal-raised) !important;
-    }
-
-    /* ---------------------------------------------------------
-       Header: remove new pure-black translucent capsules
-       --------------------------------------------------------- */
-    html.dark #page-header .translucent-surface,
-    html.dark #page-header .translucent-surface::before,
-    html.dark #page-header .translucent-surface::after {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-
-    /* Project title blends into the canvas until hovered/focused. */
-    html.dark
-      #page-header
-      a[aria-label^='Open '][aria-label$=' project'] {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-    }
-
-    html.dark
-      #page-header
-      a[aria-label^='Open '][aria-label$=' project']:hover,
-    html.dark
-      #page-header
-      a[aria-label^='Open '][aria-label$=' project']:focus-visible {
-      background: var(--charcoal-raised) !important;
-      background-color: var(--charcoal-raised) !important;
-    }
-
-    /* Share and overflow actions also blend in at rest. */
-    html.dark
-      #conversation-header-actions
-      [data-testid='share-chat-button'],
-    html.dark
-      #conversation-header-actions
-      [data-testid='conversation-options-button'] {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-    }
-
-    html.dark
-      #conversation-header-actions
-      [data-testid='share-chat-button']:hover,
-    html.dark
-      #conversation-header-actions
-      [data-testid='share-chat-button']:focus-visible,
-    html.dark
-      #conversation-header-actions
-      [data-testid='conversation-options-button']:hover,
-    html.dark
-      #conversation-header-actions
-      [data-testid='conversation-options-button']:focus-visible {
-      background: var(--charcoal-raised) !important;
-      background-color: var(--charcoal-raised) !important;
-    }
-
-    /* ---------------------------------------------------------
-       Bottom dock and warning: exact current containers
-       --------------------------------------------------------- */
-    html.dark #thread-bottom-container,
-    html.dark #thread-bottom-container::before,
-    html.dark #thread-bottom-container::after {
-      background: var(--charcoal-canvas) !important;
-      background-color: var(--charcoal-canvas) !important;
-      background-image: none !important;
-      box-shadow: none !important;
-
-      --tw-gradient-from: var(--charcoal-canvas) !important;
-      --tw-gradient-via: var(--charcoal-canvas) !important;
-      --tw-gradient-to: var(--charcoal-canvas) !important;
-      --tw-gradient-stops:
-        var(--charcoal-canvas),
+      --app-color-background-surface: var(--charcoal-canvas) !important;
+      --app-color-background-surface-under:
         var(--charcoal-canvas) !important;
-    }
 
-    /* Keep the warning text; remove only its new pill and halo. */
-    html.dark [data-testid='thread-disclaimer'] .rounded-full {
-      background: transparent !important;
-      background-color: transparent !important;
-      background-image: none !important;
-      box-shadow: none !important;
-      filter: none !important;
+      --color-surface: var(--charcoal-canvas) !important;
+      --color-surface-secondary: var(--charcoal-canvas) !important;
+      --color-surface-recovery: var(--charcoal-canvas) !important;
+
+      --color-token-bg-primary: var(--charcoal-canvas) !important;
+      --color-token-main-surface-primary:
+        var(--charcoal-canvas) !important;
+
+      /* Sidebar. */
+      --color-token-side-bar-background:
+        var(--charcoal-sidebar) !important;
+
+      /* Composer. */
+      --composer-background-color:
+        var(--charcoal-sidebar) !important;
+
+      /* User messages. */
+      --user-message-background-color:
+        var(--charcoal-raised) !important;
+      --color-background-user-message:
+        var(--charcoal-raised) !important;
+      --color-background-user-message-compact:
+        var(--charcoal-raised) !important;
+
+      /* Code blocks. */
+      --codeblock-background-color:
+        var(--charcoal-raised) !important;
+      --color-token-text-code-block-background:
+        var(--charcoal-raised) !important;
     }
 
     /* ---------------------------------------------------------
-       Project-home sticky header fade
+       Base application surfaces
        --------------------------------------------------------- */
-    html.dark
-      [class~='group/page-table-scroll']
-      [class~='content-fade-top']::after {
+    html[data-theme='dark'],
+    html[data-theme='dark'] body,
+    html[data-theme='dark'] #root {
+      background: var(--charcoal-canvas) !important;
+      background-color: var(--charcoal-canvas) !important;
+    }
+
+    /* ---------------------------------------------------------
+       Sidebar
+       --------------------------------------------------------- */
+    html[data-theme='dark'] #app-shell-sidebar {
+      --color-surface: var(--charcoal-sidebar) !important;
+      --color-surface-secondary: var(--charcoal-sidebar) !important;
+
+      background-color: var(--charcoal-sidebar) !important;
+    }
+
+    /* ---------------------------------------------------------
+       Composer
+
+       Standard conversation:
+       root owns the rounded surface.
+
+       Project home:
+       root is layout-only; body owns the rounded surface.
+       --------------------------------------------------------- */
+    html[data-theme='dark']
+      [data-composer-dark][data-composer-utility-bar-variant='default'] {
+      background-color: var(--charcoal-sidebar) !important;
+    }
+
+    html[data-theme='dark']
+      [data-composer-dark][data-composer-utility-bar-variant='home'] {
       background-color: transparent !important;
-      background-image:
-        linear-gradient(
-          to top,
-          var(--charcoal-canvas-transparent),
-          var(--charcoal-canvas)
-        ),
-        linear-gradient(
-          to top,
-          var(--charcoal-canvas-transparent) 25px,
-          var(--charcoal-canvas) 25px
-        ) !important;
+    }
+
+    html[data-theme='dark']
+      [data-composer-dark][data-composer-utility-bar-variant='home']
+      [data-composer-body] {
+      background-color: var(--charcoal-sidebar) !important;
+    }
+
+    /* ---------------------------------------------------------
+       User-message surface
+       --------------------------------------------------------- */
+    html[data-theme='dark'] [data-user-message-bubble='true'] {
+      background-color: var(--charcoal-raised) !important;
+    }
+
+    /* ---------------------------------------------------------
+       Code blocks
+       --------------------------------------------------------- */
+    html[data-theme='dark']
+      [data-markdown-copy='code-block'][data-theme='dark'] {
+      background-color: var(--charcoal-raised) !important;
     }
   `;
 
