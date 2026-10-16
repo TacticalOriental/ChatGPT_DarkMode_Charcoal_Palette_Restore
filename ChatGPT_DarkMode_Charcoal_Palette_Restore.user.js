@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      4.0.2
+// @version      4.0.3
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI tokens and hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
@@ -123,6 +123,17 @@
        --------------------------------------------------------- */
     html[data-theme='dark'] [data-dil-message-id] {
       --color-surface-secondary: var(--charcoal-raised);
+    }
+
+    /* ---------------------------------------------------------
+       Settings panels
+
+       The named settings group owns the shared panel surface.
+       Keep its token local so controls, previews, and other pages
+       retain their own backgrounds.
+       --------------------------------------------------------- */
+    html[data-theme='dark'] [class~='group/settings'] {
+      --color-background-panel: var(--charcoal-raised);
     }
 
     /* ---------------------------------------------------------
