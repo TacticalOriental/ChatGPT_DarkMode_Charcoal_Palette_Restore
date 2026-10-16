@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      4.0.0
+// @version      4.0.2
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI tokens and hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
@@ -16,7 +16,7 @@
 (function () {
   'use strict';
 
-  const STYLE_ID = 'chatgpt-charcoal-palette-restore-v4-0-0';
+  const STYLE_ID = 'chatgpt-charcoal-palette-restore';
   const css = String.raw;
 
   const stylesheet = css`
@@ -77,7 +77,6 @@
     html[data-theme='dark'] body,
     html[data-theme='dark'] #root {
       background: var(--charcoal-canvas) !important;
-      background-color: var(--charcoal-canvas) !important;
     }
 
     /* ---------------------------------------------------------
@@ -116,6 +115,17 @@
     }
 
     /* ---------------------------------------------------------
+       Rich-response surfaces
+
+       The response renderer resets its own theme tokens. Restore
+       secondary cards below that boundary. Leave individual
+       backgrounds and the other native surface tokens alone.
+       --------------------------------------------------------- */
+    html[data-theme='dark'] [data-dil-message-id] {
+      --color-surface-secondary: var(--charcoal-raised);
+    }
+
+    /* ---------------------------------------------------------
        User-message surface
        --------------------------------------------------------- */
     html[data-theme='dark'] [data-user-message-bubble='true'] {
@@ -132,30 +142,25 @@
   `;
 
   function installStyle() {
-    const previous = document.getElementById(STYLE_ID);
+    const target = document.head || document.documentElement;
 
-    if (previous) {
-      previous.remove();
+    if (!target) {
+      document.addEventListener('DOMContentLoaded', installStyle, { once: true });
+      return;
+    }
+
+    // Keep one owner across reinjection; migrate the published v4.0.0 ID.
+    for (const id of [STYLE_ID, 'chatgpt-charcoal-palette-restore-v4-0-0']) {
+      const previous = document.getElementById(id);
+      if (previous) {
+        previous.remove();
+      }
     }
 
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = stylesheet;
-
-    const target = document.head || document.documentElement;
-
-    if (target) {
-      target.appendChild(style);
-      return;
-    }
-
-    document.addEventListener(
-      'DOMContentLoaded',
-      () => {
-        (document.head || document.documentElement).appendChild(style);
-      },
-      { once: true }
-    );
+    target.appendChild(style);
   }
 
   installStyle();
