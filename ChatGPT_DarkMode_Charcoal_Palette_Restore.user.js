@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      4.0.3
+// @version      4.0.4
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI tokens and hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
@@ -23,10 +23,16 @@
     /* ---------------------------------------------------------
        Script-owned charcoal palette
        --------------------------------------------------------- */
-    html[data-theme='dark'] {
+    :root {
       --charcoal-sidebar: #181818;
       --charcoal-canvas: #212121;
       --charcoal-raised: #303030;
+    }
+
+    /* Honor the native explicit-dark seed until its bootstrap resolves. */
+    html[data-theme='dark'],
+    html[data-appearance-theme='dark']:not([data-theme]) {
+      color-scheme: dark;
 
       /* -------------------------------------------------------
          Current ChatGPT semantic surface mapping
@@ -73,10 +79,20 @@
     /* ---------------------------------------------------------
        Base application surfaces
        --------------------------------------------------------- */
+    html[data-appearance-theme='dark']:not([data-theme]),
     html[data-theme='dark'],
     html[data-theme='dark'] body,
     html[data-theme='dark'] #root {
       background: var(--charcoal-canvas) !important;
+    }
+
+    /* Native system mode follows the OS only while unresolved.
+       An explicit light preference or resolved theme always wins. */
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme]):not([data-appearance-theme='light']) {
+        color-scheme: dark;
+        background: var(--charcoal-canvas) !important;
+      }
     }
 
     /* ---------------------------------------------------------
@@ -156,7 +172,15 @@
     const target = document.head || document.documentElement;
 
     if (!target) {
-      document.addEventListener('DOMContentLoaded', installStyle, { once: true });
+      // Wait only for the root, not for network-dependent DOMContentLoaded.
+      // Disconnect before inserting the stylesheet; no repaint observer remains.
+      const observer = new MutationObserver(() => {
+        if (document.documentElement) {
+          observer.disconnect();
+          installStyle();
+        }
+      });
+      observer.observe(document, { childList: true });
       return;
     }
 
