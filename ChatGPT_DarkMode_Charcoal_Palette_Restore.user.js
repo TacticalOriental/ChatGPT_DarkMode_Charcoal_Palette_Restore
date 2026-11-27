@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT Dark Mode Charcoal Palette Restore
 // @namespace    https://github.com/TacticalOriental/ChatGPT_DarkMode_Charcoal_Palette_Restore
-// @version      4.0.4
+// @version      5.0.0
 // @description  Restores ChatGPT's charcoal dark mode palette using current semantic UI tokens and hooks, without DOM scanning or repaint loops.
 // @author       TacticalOriental
 // @license      MIT
@@ -29,9 +29,11 @@
       --charcoal-raised: #303030;
     }
 
-    /* Honor the native explicit-dark seed until its bootstrap resolves. */
+    /* Follow the current appearance mode; retain the older seed only
+       when the current attribute is absent. A resolved theme wins. */
     html[data-theme='dark'],
-    html[data-appearance-theme='dark']:not([data-theme]) {
+    html[data-appearance-mode='dark']:not([data-theme]),
+    html[data-appearance-theme='dark']:not([data-appearance-mode], [data-theme]) {
       color-scheme: dark;
 
       /* -------------------------------------------------------
@@ -57,9 +59,18 @@
       --color-token-side-bar-background:
         var(--charcoal-sidebar) !important;
 
-      /* Composer. */
+      /* Native composer surfaces choose their own paint owner, including
+         the transparent home root and the conversation's backdrop fill. */
+      --color-background-composer-surface:
+        var(--charcoal-sidebar) !important;
       --composer-background-color:
         var(--charcoal-sidebar) !important;
+
+      /* Keep the Chat / Work track distinct from its selected pill. */
+      --color-background-mode-toggle-track:
+        var(--charcoal-sidebar) !important;
+      --color-background-mode-toggle-selected:
+        var(--charcoal-raised) !important;
 
       /* User messages. */
       --user-message-background-color:
@@ -79,7 +90,8 @@
     /* ---------------------------------------------------------
        Base application surfaces
        --------------------------------------------------------- */
-    html[data-appearance-theme='dark']:not([data-theme]),
+    html[data-appearance-mode='dark']:not([data-theme]),
+    html[data-appearance-theme='dark']:not([data-appearance-mode], [data-theme]),
     html[data-theme='dark'],
     html[data-theme='dark'] body,
     html[data-theme='dark'] #root {
@@ -89,7 +101,10 @@
     /* Native system mode follows the OS only while unresolved.
        An explicit light preference or resolved theme always wins. */
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme]):not([data-appearance-theme='light']) {
+      html:not([data-theme]):not(
+        [data-appearance-mode='light'],
+        [data-appearance-theme='light']:not([data-appearance-mode])
+      ) {
         color-scheme: dark;
         background: var(--charcoal-canvas) !important;
       }
@@ -102,31 +117,6 @@
       --color-surface: var(--charcoal-sidebar) !important;
       --color-surface-secondary: var(--charcoal-sidebar) !important;
 
-      background-color: var(--charcoal-sidebar) !important;
-    }
-
-    /* ---------------------------------------------------------
-       Composer
-
-       Standard conversation:
-       root owns the rounded surface.
-
-       Project home:
-       root is layout-only; body owns the rounded surface.
-       --------------------------------------------------------- */
-    html[data-theme='dark']
-      [data-composer-dark][data-composer-utility-bar-variant='default'] {
-      background-color: var(--charcoal-sidebar) !important;
-    }
-
-    html[data-theme='dark']
-      [data-composer-dark][data-composer-utility-bar-variant='home'] {
-      background-color: transparent !important;
-    }
-
-    html[data-theme='dark']
-      [data-composer-dark][data-composer-utility-bar-variant='home']
-      [data-composer-body] {
       background-color: var(--charcoal-sidebar) !important;
     }
 
